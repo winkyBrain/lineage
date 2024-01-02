@@ -1,26 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import Graph from './Graph/Graph';
+import { nodes, edges } from './data';
+import { getGraphsArray } from './helpers/getGraphsArray';
+import { getConnectivityComponents } from './helpers/getConnectivityComponents';
+import { getEdgesMap } from './helpers/getEdgesMap';
+import { EMapEdgesKeys } from './enums/enums';
 
-function App() {
+// const styles = { display: 'flex', flexDirection: 'column', height: "100%" };
+
+const App = () => {
+  const targetsMap = getEdgesMap(edges, EMapEdgesKeys.Source, EMapEdgesKeys.Target);
+  const sourcesMap = getEdgesMap(edges, EMapEdgesKeys.Target, EMapEdgesKeys.Source);
+  const connectivityComponents = getConnectivityComponents(nodes, edges);
+  const graphsArray = getGraphsArray(connectivityComponents, targetsMap);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      {graphsArray.map((graph) => {
+        return (
+          <Graph
+            key={graph.graphId}
+            mappedNodes={graph.mappedNodes}
+            mappedEdges={graph.mappedEdges}
+            targetsMap={targetsMap}
+            sourcesMap={sourcesMap}
+          />
+        )
+      })}
+    </>
   );
-}
+};
 
 export default App;
