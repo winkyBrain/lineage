@@ -9,9 +9,9 @@ body,
   font-family: sans-serif;
 }
 
-.react-flow__node.selected {
+/* .react-flow__node.selected {
   background-color: #43e3e8;
-}
+} */
 
 .react-flow__edge.selected .react-flow__edge-path {
   stroke-width: 3px;

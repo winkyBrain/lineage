@@ -4,10 +4,14 @@ import { getGraphsArray } from './helpers/getGraphsArray';
 import { getConnectivityComponents } from './helpers/getConnectivityComponents';
 import { getEdgesMap } from './helpers/getEdgesMap';
 import { EMapEdgesKeys } from './enums/enums';
+import { TConfig } from './index';
 
 // const styles = { display: 'flex', flexDirection: 'column', height: "100%" };
+type TAppProps = {
+  config: TConfig
+}
 
-const App = () => {
+const App = ({ config }: TAppProps) => {
   const targetsMap = getEdgesMap(edges, EMapEdgesKeys.Source, EMapEdgesKeys.Target);
   const sourcesMap = getEdgesMap(edges, EMapEdgesKeys.Target, EMapEdgesKeys.Source);
   const connectivityComponents = getConnectivityComponents(nodes, edges);
@@ -23,6 +27,7 @@ const App = () => {
             mappedEdges={graph.mappedEdges}
             targetsMap={targetsMap}
             sourcesMap={sourcesMap}
+            config={config}
           />
         )
       })}

@@ -2,7 +2,7 @@ import {
   Node,
   Edge,
 } from "reactflow";
-import { ENodeColors } from '../enums/enums';
+import { TNodeColors } from '../index';
 
 type TNodes = Node<any, string | undefined>[];
 type TEdges = Edge<any>[];
@@ -15,6 +15,7 @@ type TSetSelectedElementsProps = {
   selectedNodeId: string,
   selectedChain: Set<string>;
   isMultiSelect: boolean;
+  nodeColors: TNodeColors,
 }
 
 export const setSelectedElements = ({
@@ -25,16 +26,19 @@ export const setSelectedElements = ({
   selectedNodeId,
   selectedChain,
   isMultiSelect,
+  nodeColors,
 }: TSetSelectedElementsProps): void => {
   if (isMultiSelect) {
     setNodes(nodes.map((node) => {
-      const nodeIsSelected = selectedChain.has(node.id);
+      const isClickedNode = node.id === selectedNodeId;
+      const nodeIsSelected = selectedChain.has(node.id) || node.selected;
       return {
         ...node,
-        selected: nodeIsSelected || node.selected,
-        style: (nodeIsSelected && node.id === selectedNodeId) || node.style ? {
-          backgroundColor: ENodeColors.Clicked
-        } : undefined,
+        selected: nodeIsSelected,
+        style: (nodeIsSelected && node.id === selectedNodeId) || node.data.clicked ? {
+          backgroundColor: nodeColors.clicked
+        } : nodeIsSelected ? { backgroundColor: nodeColors.selected } : undefined,
+        data: { ...node.data, clicked: node.data.clicked || isClickedNode }
       };
     }));
     setEdges(edges.map((edge) => {
@@ -46,13 +50,16 @@ export const setSelectedElements = ({
     }));
   } else {
     setNodes(nodes.map((node) => {
+      const isClickedNode = node.id === selectedNodeId;
       const nodeIsSelected = selectedChain.has(node.id);
+
       return {
         ...node,
         selected: nodeIsSelected,
-        style: nodeIsSelected && (node.id === selectedNodeId) ? {
-          backgroundColor: ENodeColors.Clicked
-        } : undefined,
+        style: nodeIsSelected && (isClickedNode) ? {
+          backgroundColor: nodeColors.clicked
+        } : nodeIsSelected ? { backgroundColor: nodeColors.selected } : undefined,
+        data: { ...node.data, clicked: isClickedNode }
       };
     }));
     setEdges(edges.map((edge) => {

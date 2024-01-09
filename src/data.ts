@@ -390,13 +390,6 @@ export const edges: TInitialEdge[] = [
     }
   },
   {
-    source: "17",
-    target: "16",
-    attributes: {
-      appId: "url"
-    }
-  },
-  {
     source: "8",
     target: "7",
     attributes: {

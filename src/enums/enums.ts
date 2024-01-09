@@ -6,12 +6,6 @@ export enum EGraphEZIndexes {
   EdgeLabelFirstZIndex = 5,
 };
 
-export enum ENodeColors {
-  Clicked = '#f74d6f',
-  Selected = '#43e3e8',
-  Default = 'rgb(226, 226, 226)'
-}
-
 export enum EMapEdgesKeys {
   Target = 'target',
   Source = 'source',

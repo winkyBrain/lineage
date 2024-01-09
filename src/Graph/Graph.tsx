@@ -14,15 +14,17 @@ import { getSelectedNodesId } from '../helpers/getSelectedNodesId';
 import { setSelectedElements } from '../helpers/setSelectedElements';
 import { NodeTooltip } from '../tooltips/NodeTooltip/NodeTooltip';
 import { CustomNode } from './CustomNode/CustomNode';
-import { EGraphEZIndexes, ENodeColors } from '../enums/enums';
+import { EGraphEZIndexes } from '../enums/enums';
 import styles from './styles.module.css'
 import { ToggleComponent } from './SettingsPanel/SettingsPanel';
+import { TConfig } from '../index';
 
 type TGraphProps = {
   mappedNodes: Node[];
   mappedEdges: Edge[];
   targetsMap: TEdgesMap;
   sourcesMap: TEdgesMap;
+  config: TConfig;
 }
 
 const nodeTypes = {
@@ -30,7 +32,7 @@ const nodeTypes = {
 };
 
 const edgeTypes = {
-  custom: CustomEdge
+  custom: CustomEdge,
 };
 
 const defaultEdgeOptions = {
@@ -38,23 +40,21 @@ const defaultEdgeOptions = {
   stroke: '#a742f5',
 }
 
-const minimapNodeColor = (node: Node): string => {
-  if (node.style) {
-    return ENodeColors.Clicked;
-  }
-  if (node.selected) {
-    return ENodeColors.Selected;
-  }
-  return ENodeColors.Default;
-}
-
-const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap }: TGraphProps): JSX.Element => {
+const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap, config }: TGraphProps): JSX.Element => {
   const [nodes, setNodes, onNodesChange] = useNodesState(mappedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(mappedEdges);
   const hoveredNode = useSignal<Node | null>(null);
   const isEdgesFirst = useSignal(false);
-  console.log(mappedNodes);
-  console.log(mappedEdges);
+
+  const minimapNodeColor = (node: Node): string => {
+    if (node.data.clicked) {
+      return config.nodeColors.clicked;
+    }
+    if (node.selected) {
+      return config.nodeColors.selected;
+    }
+    return config.nodeColors.default;
+  }
 
   const onEdgeClick = (_: any, edge: Edge) => {
     console.log(edge);
@@ -71,6 +71,7 @@ const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap }: TGraphProps
       selectedNodeId,
       selectedChain,
       isMultiSelect: event.ctrlKey,
+      nodeColors: config.nodeColors,
     });
   };
 

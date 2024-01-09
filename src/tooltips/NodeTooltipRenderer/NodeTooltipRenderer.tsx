@@ -5,6 +5,8 @@ type TNodeTooltipRendererProps = {
 }
 
 export const NodeTooltipRenderer = ({ attributes }: TNodeTooltipRendererProps) => {
+  const keys = Object.keys(attributes);
+
   return (
     <div style={{
       border: '1px solid black',
@@ -12,7 +14,12 @@ export const NodeTooltipRenderer = ({ attributes }: TNodeTooltipRendererProps) =
       backgroundColor: 'white',
       padding: '2px 6px'
     }}>
-      <span>{attributes.nodeType}</span>
+      {keys.map((key: string) => {
+        return (
+          // @ts-ignore
+          <span key={key}>{key}: {attributes[key]}</span>
+        );
+      })}
     </div>
   )
 };

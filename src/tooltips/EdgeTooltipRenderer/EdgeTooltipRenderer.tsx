@@ -5,6 +5,8 @@ type TEdgeTooltipRenderer = {
 }
 
 export const EdgeTooltipRenderer = ({ attributes }: TEdgeTooltipRenderer) => {
+  const keys = Object.keys(attributes);
+
   return (
     <div style={{
       border: '1px solid black',
@@ -12,7 +14,12 @@ export const EdgeTooltipRenderer = ({ attributes }: TEdgeTooltipRenderer) => {
       backgroundColor: 'white',
       padding: '2px 6px',
     }}>
-      <span>{attributes.appId}</span>
+      {keys.map((key: string) => {
+        return (
+          // @ts-ignore
+          <span key={key}>{key}: {attributes[key]}</span>
+        );
+      })}
     </div>
   )
 };
