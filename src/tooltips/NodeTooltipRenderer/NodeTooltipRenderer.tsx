@@ -5,19 +5,23 @@ type TNodeTooltipRendererProps = {
 }
 
 export const NodeTooltipRenderer = ({ attributes }: TNodeTooltipRendererProps) => {
-  const keys = Object.keys(attributes);
+  const keys = Object.entries(attributes);
 
   return (
     <div style={{
       border: '1px solid black',
-      borderRadius: '2px',
+      borderRadius: '6px',
       backgroundColor: 'white',
-      padding: '2px 6px'
+      padding: '2px 6px',
+      display: 'flex', // хардкод
+      flexDirection: 'column', // хардкод
+      alignItems: 'center',
+      justifyContent: 'center',
+      gap: '6px',
     }}>
-      {keys.map((key: string) => {
+      {keys.map(([key, value]) => {
         return (
-          // @ts-ignore
-          <span key={key}>{key}: {attributes[key]}</span>
+          <span key={key}>{key}: {value}</span>
         );
       })}
     </div>

@@ -18,6 +18,7 @@ import { EGraphEZIndexes } from '../enums/enums';
 import styles from './styles.module.css'
 import { ToggleComponent } from './SettingsPanel/SettingsPanel';
 import { TConfig } from '../index';
+import { useCallback } from 'react';
 
 type TGraphProps = {
   mappedNodes: Node[];
@@ -37,24 +38,24 @@ const edgeTypes = {
 
 const defaultEdgeOptions = {
   type: 'custom',
-  stroke: '#a742f5',
 }
 
 const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap, config }: TGraphProps): JSX.Element => {
   const [nodes, setNodes, onNodesChange] = useNodesState(mappedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(mappedEdges);
+
   const hoveredNode = useSignal<Node | null>(null);
   const isEdgesFirst = useSignal(false);
 
-  const minimapNodeColor = (node: Node): string => {
+  const minimapNodeColor = useCallback((node: Node): string => {
     if (node.data.clicked) {
-      return config.nodeColors.clicked;
+      return config.minimapColors.clicked;
     }
     if (node.selected) {
-      return config.nodeColors.selected;
+      return config.minimapColors.selected;
     }
-    return config.nodeColors.default;
-  }
+    return config.minimapColors.default;
+  }, [config]);
 
   const onEdgeClick = (_: any, edge: Edge) => {
     console.log(edge);
@@ -71,7 +72,7 @@ const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap, config }: TGr
       selectedNodeId,
       selectedChain,
       isMultiSelect: event.ctrlKey,
-      nodeColors: config.nodeColors,
+      config: config,
     });
   };
 

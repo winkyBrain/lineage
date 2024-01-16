@@ -17,6 +17,7 @@ export const EdgeTooltip = ({ data, TooltipRenderer = EdgeTooltipRenderer }: TEd
     }
       duration={0}
       placement='top'
+      maxWidth={500}
     >
       <button className={styles.edgeButton}
         style={{

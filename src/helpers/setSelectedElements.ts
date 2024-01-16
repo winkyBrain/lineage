@@ -2,7 +2,7 @@ import {
   Node,
   Edge,
 } from "reactflow";
-import { TNodeColors } from '../index';
+import { TConfig } from '../index';
 
 type TNodes = Node<any, string | undefined>[];
 type TEdges = Edge<any>[];
@@ -15,7 +15,7 @@ type TSetSelectedElementsProps = {
   selectedNodeId: string,
   selectedChain: Set<string>;
   isMultiSelect: boolean;
-  nodeColors: TNodeColors,
+  config: TConfig,
 }
 
 export const setSelectedElements = ({
@@ -26,7 +26,7 @@ export const setSelectedElements = ({
   selectedNodeId,
   selectedChain,
   isMultiSelect,
-  nodeColors,
+  config,
 }: TSetSelectedElementsProps): void => {
   if (isMultiSelect) {
     setNodes(nodes.map((node) => {
@@ -35,9 +35,12 @@ export const setSelectedElements = ({
       return {
         ...node,
         selected: nodeIsSelected,
-        style: (nodeIsSelected && node.id === selectedNodeId) || node.data.clicked ? {
-          backgroundColor: nodeColors.clicked
-        } : nodeIsSelected ? { backgroundColor: nodeColors.selected } : undefined,
+        style: {
+          ...node.style,
+          ...((nodeIsSelected && isClickedNode) || node.data.clicked ?
+            config.clickedNodeStyles
+            : nodeIsSelected ? config.selectedNodeStyles : config.defaultNodeStyles),
+        },
         data: { ...node.data, clicked: node.data.clicked || isClickedNode }
       };
     }));
@@ -56,9 +59,12 @@ export const setSelectedElements = ({
       return {
         ...node,
         selected: nodeIsSelected,
-        style: nodeIsSelected && (isClickedNode) ? {
-          backgroundColor: nodeColors.clicked
-        } : nodeIsSelected ? { backgroundColor: nodeColors.selected } : undefined,
+        style: {
+          ...node.style,
+          ...(nodeIsSelected && isClickedNode ?
+            config.clickedNodeStyles
+            : nodeIsSelected ? config.selectedNodeStyles : config.defaultNodeStyles),
+        },
         data: { ...node.data, clicked: isClickedNode }
       };
     }));

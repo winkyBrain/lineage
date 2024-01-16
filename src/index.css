@@ -14,7 +14,7 @@ body,
 } */
 
 .react-flow__edge.selected .react-flow__edge-path {
-  stroke-width: 3px;
+  stroke-width: 2px;
 }
 
 .react-flow__panel {

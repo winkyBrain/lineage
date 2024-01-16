@@ -150,10 +150,10 @@ export const getGraphsArray = (connectivityComponents: connectivityComponents, t
         id: `${target}-${source}`,
         animated: true,
         zIndex: EGraphEZIndexes.DefaultEdgeZIndex,
-        style: {
-          stroke: "#a742f5",
-          zIndex: EGraphEZIndexes.DefaultEdgeZIndex,
-        },
+        // style: {
+        //   stroke: "#a742f5",
+        //   zIndex: EGraphEZIndexes.DefaultEdgeZIndex,
+        // },
         markerEnd: {
           type: MarkerType.ArrowClosed,
           color: "#a742f5"

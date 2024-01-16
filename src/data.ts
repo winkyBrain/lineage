@@ -9,14 +9,18 @@ export type TEdgeAttributes = {
 export type TInitialNode = {
   nodeId: string;
   nodeName: string;
-  attributes: TNodeAttributes,
+  attributes: {
+    [key: string]: string;
+  },
   isFinal: boolean;
 }
 
 export type TInitialEdge = {
   source: string;
   target: string;
-  attributes: TEdgeAttributes,
+  attributes: {
+    [key: string]: string;
+  },
 }
 
 export const nodes: TInitialNode[] = [

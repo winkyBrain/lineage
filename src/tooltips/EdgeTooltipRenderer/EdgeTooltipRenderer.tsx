@@ -5,19 +5,22 @@ type TEdgeTooltipRenderer = {
 }
 
 export const EdgeTooltipRenderer = ({ attributes }: TEdgeTooltipRenderer) => {
-  const keys = Object.keys(attributes);
+  const keys = Object.entries(attributes);
 
   return (
     <div style={{
       border: '1px solid black',
-      borderRadius: '2px',
+      borderRadius: '6px',
       backgroundColor: 'white',
       padding: '2px 6px',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
     }}>
-      {keys.map((key: string) => {
+      {keys.map(([key, value]) => {
         return (
-          // @ts-ignore
-          <span key={key}>{key}: {attributes[key]}</span>
+          <span key={key}>{key}: {value}</span>
         );
       })}
     </div>
