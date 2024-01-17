@@ -19,22 +19,21 @@ export type TTooltipStyles = Pick<React.CSSProperties,
 
 export type TEdgeLabelStyles = Pick<React.CSSProperties,
   'height' | 'width' | 'padding' | 'color' | 'backgroundColor' | 'border' | 'borderRadius' | 'fontFamily' | 'fontSize'
-  | 'fontWeight' | 'justifyContent' | 'alignItems' | 'cursor'>
-// type TEdgeStyles = {
-//   color: string,
-//   strokeWidth: string,
-//   // найти возможность задавать перфорацию
-// };
+  | 'fontWeight' | 'cursor'>;
+
+export type TEdgeStyles = Pick<React.CSSProperties, 'stroke' | 'strokeWidth'>;
+// найти возможность задавать перфорацию
 
 export type TConfig = {
   minimapColors: TMinimapColors,
-  edgeColor: string,
   commonNodeStyles: TCommonNodeStyles,
   selectedNodeStyles: TCustomNodeStyles,
   clickedNodeStyles: TCustomNodeStyles,
   defaultNodeStyles: TCustomNodeStyles,
-}
-
+  tooltipStyles: TTooltipStyles;
+  edgeStyles: TEdgeStyles;
+  edgeLabelStyles: TEdgeLabelStyles;
+};
 
 const config: TConfig = {
   minimapColors: {
@@ -42,7 +41,6 @@ const config: TConfig = {
     clicked: '#f74d6f',
     selected: '#43e3e8',
   },
-  edgeColor: '#a742f5',
   commonNodeStyles: {
     padding: '10px',
     borderRadius: '10px',
@@ -74,7 +72,31 @@ const config: TConfig = {
     fontWeight: 600,
     boxShadow: 'none',
   },
-}
+  tooltipStyles: {
+    border: '1px solid black',
+    borderRadius: '6px',
+    backgroundColor: 'white',
+    padding: '2px 6px',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: '6px',
+  },
+  edgeStyles: {
+    stroke: '#a742f5',
+    strokeWidth: 1,
+  },
+  edgeLabelStyles: {
+    padding: '0px',
+    color: 'black',
+    backgroundColor: '#eee',
+    border: '1px solid #fff',
+    cursor: 'pointer',
+    borderRadius: '50%',
+    fontSize: '12px',
+    height: '20px',
+    width: '20px',
+  },
+};
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement

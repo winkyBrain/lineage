@@ -1,3 +1,4 @@
+import { useCallback, useLayoutEffect } from 'react';
 import ReactFlow, {
   useNodesState,
   useEdgesState,
@@ -5,8 +6,7 @@ import ReactFlow, {
   Edge,
   MiniMap,
 } from "reactflow";
-import { useSignal } from "@preact/signals-react";
-import "reactflow/dist/style.css";
+import { useSignal, signal } from "@preact/signals-react";
 import { CustomEdge } from "./CustomEdge/CustomEdge";
 import { SelectionChangeLogger } from "./SelectionChangeLogger/SelectionChangeLogger";
 import { TEdgesMap } from '../helpers/getEdgesMap';
@@ -15,10 +15,10 @@ import { setSelectedElements } from '../helpers/setSelectedElements';
 import { NodeTooltip } from '../tooltips/NodeTooltip/NodeTooltip';
 import { CustomNode } from './CustomNode/CustomNode';
 import { EGraphEZIndexes } from '../enums/enums';
-import styles from './styles.module.css'
 import { ToggleComponent } from './SettingsPanel/SettingsPanel';
-import { TConfig } from '../index';
-import { useCallback } from 'react';
+import { TConfig, TEdgeLabelStyles, TTooltipStyles } from '../index';
+import styles from './styles.module.css'
+import "reactflow/dist/style.css";
 
 type TGraphProps = {
   mappedNodes: Node[];
@@ -38,11 +38,19 @@ const edgeTypes = {
 
 const defaultEdgeOptions = {
   type: 'custom',
-}
+};
+
+export const edgeTooltipStyles = signal<null | TTooltipStyles>(null);
+export const edgeLabelStyles = signal<undefined | TEdgeLabelStyles>(undefined);
 
 const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap, config }: TGraphProps): JSX.Element => {
   const [nodes, setNodes, onNodesChange] = useNodesState(mappedNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(mappedEdges);
+
+  useLayoutEffect(() => {
+    edgeTooltipStyles.value = config.tooltipStyles;
+    edgeLabelStyles.value = config.edgeLabelStyles;
+  }, [config]);
 
   const hoveredNode = useSignal<Node | null>(null);
   const isEdgesFirst = useSignal(false);
@@ -129,7 +137,7 @@ const Graph = ({ mappedNodes, mappedEdges, targetsMap, sourcesMap, config }: TGr
         <ToggleComponent toggled={isEdgesFirst} label='Edges first' setIsEdgesFirst={setIsEdgesFirst} />
         <MiniMap nodeColor={minimapNodeColor} zoomable pannable className={styles.miniMap} />
         <SelectionChangeLogger />
-        <NodeTooltip hoveredNode={hoveredNode} />
+        <NodeTooltip hoveredNode={hoveredNode} tooltipStyles={config.tooltipStyles} />
       </ReactFlow>
     </div>
   );

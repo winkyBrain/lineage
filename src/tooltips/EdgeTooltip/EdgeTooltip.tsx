@@ -1,5 +1,6 @@
 import Tippy from '@tippyjs/react';
-import { EdgeTooltipRenderer } from '../EdgeTooltipRenderer/EdgeTooltipRenderer';
+import { edgeTooltipStyles, edgeLabelStyles } from '../../Graph/Graph';
+import { DefaultTooltipRenderer } from '../DefaultTooltipRenderer/DefaultTooltipRenderer';
 import styles from './styles.module.css'
 
 type TEdgeTooltipProps = {
@@ -7,23 +8,18 @@ type TEdgeTooltipProps = {
   TooltipRenderer?: (data: any) => JSX.Element,
 }
 
-export const EdgeTooltip = ({ data, TooltipRenderer = EdgeTooltipRenderer }: TEdgeTooltipProps) => {
-  const buttonHeight = 20;
-  const buttonWidth = 20;
+export const EdgeTooltip = ({ data, TooltipRenderer = DefaultTooltipRenderer }: TEdgeTooltipProps) => {
 
   return (
     <Tippy content={
-      <TooltipRenderer attributes={data.attributes} />
+      <TooltipRenderer attributes={data.attributes} tooltipStyles={edgeTooltipStyles.value} />
     }
       duration={0}
       placement='top'
       maxWidth={500}
     >
       <button className={styles.edgeButton}
-        style={{
-          height: `${buttonHeight}px`,
-          width: `${buttonWidth}px`,
-        }}
+        style={edgeLabelStyles.value}
         onMouseEnter={() => {
           console.log('edge tooltip mounted');
         }}

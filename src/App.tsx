@@ -5,7 +5,7 @@ import { getGraphsArray } from './helpers/getGraphsArray';
 import { getConnectivityComponents } from './helpers/getConnectivityComponents';
 import { getEdgesMap } from './helpers/getEdgesMap';
 import { EGraphEZIndexes, EMapEdgesKeys } from './enums/enums';
-import { TConfig } from './index';
+import { TConfig, TEdgeStyles } from './index';
 import { Edge, Node } from 'reactflow';
 
 // const styles = { display: 'flex', flexDirection: 'column', height: "100%" };
@@ -14,7 +14,6 @@ type TAppProps = {
 }
 
 const getStyledNodes = (nodes: Node[], nodeStyle: React.CSSProperties) => {
-  console.log(nodeStyle);
   return nodes.map((node) => {
     return {
       ...node,
@@ -23,12 +22,12 @@ const getStyledNodes = (nodes: Node[], nodeStyle: React.CSSProperties) => {
   });
 };
 
-const getStyledEdges = (edges: Edge[], color: string) => {
+const getStyledEdges = (edges: Edge[], edgeStyle: TEdgeStyles) => {
   return edges.map((edge) => {
     return {
       ...edge,
       style: {
-        stroke: color,
+        ...edgeStyle,
         zIndex: EGraphEZIndexes.DefaultEdgeZIndex,
       }
     }
@@ -45,7 +44,7 @@ const App = ({ config }: TAppProps) => {
     <>
       {graphsArray.map((graph) => {
         const styleNodes = getStyledNodes(graph.mappedNodes, { ...config.commonNodeStyles, ...config.defaultNodeStyles });
-        const styledEdges = getStyledEdges(graph.mappedEdges, config.edgeColor);
+        const styledEdges = getStyledEdges(graph.mappedEdges, config.edgeStyles);
         return (
           <Graph
             key={graph.graphId}

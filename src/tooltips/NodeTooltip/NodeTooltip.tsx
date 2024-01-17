@@ -2,14 +2,16 @@ import { Signal } from '@preact/signals-react';
 import {
   NodeToolbar, Position, Node
 } from "reactflow";
-import { NodeTooltipRenderer } from '../NodeTooltipRenderer/NodeTooltipRenderer';
+import { DefaultTooltipRenderer } from '../DefaultTooltipRenderer/DefaultTooltipRenderer';
+import { TTooltipStyles } from '../../index';
 
 type TNodeTooltipProps = {
   hoveredNode: Signal<Node | null>,
   TooltipRenderer?: (data: any) => JSX.Element,
+  tooltipStyles: TTooltipStyles,
 }
 
-export const NodeTooltip = ({ hoveredNode, TooltipRenderer = NodeTooltipRenderer }: TNodeTooltipProps): JSX.Element | null => {
+export const NodeTooltip = ({ hoveredNode, TooltipRenderer = DefaultTooltipRenderer, tooltipStyles }: TNodeTooltipProps): JSX.Element | null => {
   if (!hoveredNode.value) {
     return null;
   }
@@ -18,7 +20,7 @@ export const NodeTooltip = ({ hoveredNode, TooltipRenderer = NodeTooltipRenderer
 
   return (
     <NodeToolbar isVisible position={Position.Left} nodeId={hoveredNode.value.id}>
-      <TooltipRenderer attributes={attributes} />
+      <TooltipRenderer attributes={attributes} tooltipStyles={tooltipStyles} />
     </NodeToolbar>
   );
 };
